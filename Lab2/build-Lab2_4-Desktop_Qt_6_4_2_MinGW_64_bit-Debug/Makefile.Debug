@@ -53,8 +53,7 @@ OBJECTS_DIR   = debug
 SOURCES       = ..\Lab2_4\main.cpp 
 OBJECTS       = debug/main.o
 
-DIST          =  equipment.h \
-		hero.h ..\Lab2_4\main.cpp
+DIST          =  hero.h ..\Lab2_4\main.cpp
 QMAKE_TARGET  = Lab2_4
 DESTDIR        = debug\ #avoid trailing-slash linebreak
 TARGET         = Lab2_4.exe
@@ -102,7 +101,7 @@ compiler_clean:
 
 ####### Compile
 
-debug/main.o: ../Lab2_4/main.cpp 
+debug/main.o: ../Lab2_4/main.cpp ../Lab2_4/hero.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o ..\Lab2_4\main.cpp
 
 ####### Install
