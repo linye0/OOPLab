@@ -10,16 +10,13 @@ using namespace std;
 
 class GameMap{
 public:
-    static void printGirdName(){
-        for (auto i : GameMap::gridName) {
-            cout << i << endl;
-        }
-    }
-    static void setGridName(string newNames){
-        for (int i = 0; i < 4; i++) {
-            gridName[i] = newNames[i];
-        }
-    }
+    // 打印当前各格子类型的名字
+    static void printGirdName();
+    // 设置类型的显示名称
+    static void setGridName(string newNames);
+    static void setGridName(int i, char newName);
+    static void setGridName(char oldName, char newName);
+    // 构造函数
     GameMap(int row, int col, int type = 0) : row(row), col(col){
         map = new int*[row];
         for (int i = 0; i < row; i++) {
@@ -42,6 +39,7 @@ public:
             map[curRow][curCol] = inputMap[pos] - '0';
         }
     }
+    // 拷贝构造
     GameMap(const GameMap& other) {
         row = other.getRow();
         col = other.getCol();
@@ -54,55 +52,36 @@ public:
                 map[i][j] = other.getGrid(i, j);
             }
         }
+        cout << "copy structor call" << endl;
+        cout << endl;
     }
+    // 析构函数
     ~GameMap() {
         for (int i = 0; i < row; i++) {
             delete[] map[i];
         }
         delete[] map;
+        cout << "destructor call" << endl << endl;
     }
+    // 查看对象的一些信息
     int getRow() const {return row;}
     int getCol() const {return col;}
     int getGrid(int row, int col) const {return map[row][col];}
     void printGrid(int row, int col) {
-        cout << GameMap::gridName[map[row][col]] << endl;
+        printf("(%d, %d)type is %c\n\n", row, col, GameMap::gridName[map[row][col]]);
     }
-    void printMaze() {
-        printf("  ");
-        for (int i = 0; i < col; i++) {
-            printf("%d ", i);
-            if (i == col - 1) printf("\n");
-        }
-        for (int i = 0; i < row; i++) {
-            printf("%d ", i);
-            for (int j = 0; j < col; j++) {
-                char name = GameMap::gridName[map[i][j]];
-                printf("%c ", name);
-            }
-            printf("\n");
-        }
-        cout << endl;
-    }
-    GameMap* operator=(const GameMap& other) {
-        if (this != &other) {
-
-        }
-        return this;
-    }
-    void sumTrap(int row, int col) {
-        int sum = 0;
-        for (int i = row - 1; i <= row + 1; i++) {
-            for (int j = col - 1; j <= col + 1; j++) {
-                if (i == row && j == col) continue;
-                if (i < this->row && i >= 0 && j < this->col && j >= 0 && map[i][j] != 0) sum++;
-            }
-        }
-        cout << sum << endl;
-    }
-    int* operator[](int i) {
-        return map[i];
-    }
-
+    // 打印整个地图
+    void show();
+    // 打印某一个旁边的陷阱数
+    void sumTrap(int row, int col);
+    // 打印总的陷阱信息（数量总和及部分数量）
+    void printInfo();
+    // 更改单元格
+    void setGrid(int row, int col, char newGrid);
+    void setGrid(int row, int col, int newGrid) {map[row][col] = newGrid;}
+    // 不允许赋值
+    GameMap* operator=(const GameMap& other) = delete;
+    int* operator[](int i) {return map[i];}
 private:
     int** map;
     int row;

@@ -9,7 +9,7 @@ int main()
     a[1][2] = 1;
     a[2][3] = 2;
     const DynamicArray & ra = a;
-    ra[1][2];
+    ra[1][2] = 1;
     cout << a[1][2] << endl;
     cout << a[2][3] << endl;
     return 0;
